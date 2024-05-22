@@ -6,10 +6,22 @@ def validUTF8(data):
     """
     Determines if a given data set represents a valid UTF-8 encoding
     """
+    n_bytes = 0
+    mask1 = 1 << 7
+    mask2 = 1 << 6
     for i in data:
-        a = str(bin(i)[2:].zfill(8))
-        if int(a[0]) == 0:
-            continue
+        a = bin(i)[2:].zfill(8)
+        if n_bytes == 0:
+            for bit in a:
+                if bit == '0':
+                    break
+                n_bytes += 1
+            if n_bytes == 0:
+                continue
+            if n_bytes == 1 or n_bytes > 4:
+                return False
         else:
-            return False
-    return True
+            if not (i & mask1 and not (i & mask2)):
+                return False
+        n_bytes -= 1
+    return n_bytes == 0
