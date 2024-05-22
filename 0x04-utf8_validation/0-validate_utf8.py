@@ -2,26 +2,36 @@
 """UTF-8 Validation"""
 
 
+#!/usr/bin/python3
+"""UTF-8 Validation"""
+
+
 def validUTF8(data):
     """
     Determines if a given data set represents a valid UTF-8 encoding
     """
-    n_bytes = 0
-    mask1 = 1 << 7
-    mask2 = 1 << 6
+    def count_of_bytes(n):
+        """
+        Get the plage number of a number in UTF-8
+        """
+        mask = 1 << 7
+        i = 0
+        while (n & mask):
+            i += 1
+            mask = mask >> 1
+        return i
+
+    count = 0        
     for i in data:
-        a = bin(i)[2:].zfill(8)
-        if n_bytes == 0:
-            for bit in a:
-                if bit == '0':
-                    break
-                n_bytes += 1
-            if n_bytes == 0:
+        if not count:
+            count = count_of_bytes(i)
+            if count == 0:
                 continue
-            if n_bytes == 1 or n_bytes > 4:
+            if count == 1 or count > 4:
                 return False
+            count -= 1
         else:
-            if not (i & mask1 and not (i & mask2)):
+            count -= 1
+            if count_of_bytes(i) != 1:
                 return False
-        n_bytes -= 1
-    return n_bytes == 0
+    return count == 0
