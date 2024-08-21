@@ -15,7 +15,7 @@ def makeChange(coins: List[int], total: int):
         - If total is 0 or less, 0
         - If total cannot be met by any number of coins you have, -1
     """
-    if total == 0:
+    if total <= 0:
         return 0
 
     return -1
