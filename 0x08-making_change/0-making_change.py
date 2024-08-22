@@ -18,4 +18,13 @@ def makeChange(coins: List[int], total: int):
     if total <= 0:
         return 0
 
-    return -1
+    n = total + 1
+    dp = [n] * (n)
+    dp[0] = 0
+
+    for a in range(1, n):
+        for coin in coins:
+            if (a - coin) >= 0:
+                dp[a] = min(dp[a], (1 + dp[a - coin]))
+
+    return dp[total] if dp[total] <= total else -1
