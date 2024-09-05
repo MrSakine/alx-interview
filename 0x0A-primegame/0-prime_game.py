@@ -24,9 +24,7 @@ def isWinner(x, nums):
                     sieve[j] = False
         return sieve
 
-    max_num = max(nums)
-    primes = sieve_of_eratosthenes(max_num)
-    print(primes)
+    primes = sieve_of_eratosthenes(x)
     maria_wins = 0
     ben_wins = 0
 
